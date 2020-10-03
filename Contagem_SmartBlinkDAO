@@ -1,0 +1,385 @@
+package dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+import modelo.ModuloConexaoTelepatiX;
+
+public class Contagem_SmartBlinkDAO {
+	
+	public static Random t = new Random();
+	public static HashMap<String, Integer> hashFrase;	
+	public static List<Double> valor = new ArrayList<Double>();
+	static Connection conexaoBD;
+	static PreparedStatement pst = null;
+	static ResultSet rs = null;
+	
+	
+	public Contagem_SmartBlinkDAO() {
+	}
+	
+	public static void conexaoContagem_TelepatiXDAO() {
+		conexaoBD = ModuloConexaoTelepatiX.conector();
+		if (conexaoBD != null) {
+			System.out.println("conectado");
+		} else {
+			System.out.println("não conectado ao BD");
+		}
+	}
+	
+
+	public static void main(String[] args){
+		
+		conexaoBD = ModuloConexaoTelepatiX.conector();
+		conexaoContagem_TelepatiXDAO();
+		hashFrase = new HashMap<String, Integer>();
+
+		  hashFrase.put("", 3);  
+//        hashFrase.put("", 6); // ativar a cada 30 execuções do anterior
+//        hashFrase.put("", 9); // ativar a cada 30 execuções do anterior
+//        hashFrase.put("", 12); // ativar a cada 30 execuções do anterior
+//        hashFrase.put("", 15); // ativar a cada 30 execuções do anterior
+//        hashFrase.put("", 18); // ativar a cada 30 execuções do anterior
+//        hashFrase.put("", 21); // ativar a cada 30 execuções do anterior
+//        hashFrase.put("", 24); // ativar a cada 30 execuções do anterior
+ 
+//        String teste = ""; //ESPACO
+		
+		
+		double erro1[]= {0.01};
+		double erro2[]= {0.03};
+		double erro3[]= {0.05};
+		double erro4[]= {0.1};
+		double erro5[]= {0.15};
+		double erro6[]= {0.2};
+		double erro7[]= {0.5};
+		
+		// Calcular o tempo
+
+		double desv = 0D;	
+
+				for (double err : erro1) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = minhaFuncao(err);
+				        valor.add(res);
+				        System.out.println(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirSmartX1(media, desv);
+				}
+				
+				for (double err : erro2) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = minhaFuncao(err);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirSmartX2(media, desv);
+				}
+				
+				for (double err : erro3) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = minhaFuncao(err);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirSmartX3(media, desv);
+				}
+				
+				for (double err : erro4) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = minhaFuncao(err);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirSmartX4(media, desv);
+				}
+				
+				for (double err : erro5) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = minhaFuncao(err);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirSmartX5(media, desv);
+				}
+				
+				for (double err : erro6) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = minhaFuncao(err);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirSamrtX6(media, desv);
+				}
+				
+				for (double err : erro7) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = minhaFuncao(err);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirSmartX7(media, desv);
+				}
+				
+			}
+	
+	static double minhaFuncao(double erro)
+	{
+		int count = 0;
+
+//		for (int i = 0; i < teste.length(); i++) {
+				
+				double numberRandom;
+				do
+				{
+					numberRandom=t.nextDouble();
+
+					
+					if(numberRandom <= erro)
+						count = count +  6 + hashFrase.hashCode(); // são 9 segundos para corrigir [apagar] cada letra
+					else{
+						count = count + 3+ hashFrase.hashCode(); // são 9 segundos para corrigir [apagar] cada letra
+//						System.out.println("é o count"+ count);
+					}		
+					
+				}while(numberRandom <= erro);
+				
+//		}
+		
+		return count;
+	}
+	
+	 public static strictfp Double getMedia(List<Double> valor) {
+	        return getSoma(valor) / valor.size();
+	    }
+	    
+	    public static strictfp Double getSoma(List<Double> valor) {
+	        Double soma = 0D;
+	        for (int i = 0; i < valor.size(); i++) {
+	            soma += valor.get(i);
+	        }
+	        return soma;
+	    }
+	    
+	    public static strictfp Double getDesvioPadrao(List<Double> valor) {
+	        Double media = getMedia(valor);
+	        int tam = valor.size();
+	        Double variancia = 0D;
+	        for (Double vlr : valor) {
+	            Double aux = vlr - media;
+	            variancia += aux * aux;
+	        }
+	        
+	        return Math.sqrt(variancia / (tam-1));
+	    }
+	    
+	    public static Boolean inserirSmartX1(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo1 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirSmartX2(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo2 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirSmartX3(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo3 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirSmartX4(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo4 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirSmartX5(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo5 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirSamrtX6(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo6 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    
+	    public static Boolean inserirSmartX7(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo7 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+}
