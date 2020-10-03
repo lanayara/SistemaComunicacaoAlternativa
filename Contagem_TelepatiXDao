@@ -1,0 +1,418 @@
+package dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+import modelo.ModuloConexaoTelepatiX;
+
+public class Contagem_TelepatiXDAO {
+	
+	public static Random t = new Random();
+	public static HashMap<String, Integer> hashLetras;	
+	public static List<Double> valor = new ArrayList<Double>();
+	static Connection conexaoBD;
+	static PreparedStatement pst = null;
+	static ResultSet rs = null;
+	
+	
+	public Contagem_TelepatiXDAO() {
+	}
+	
+	public static void conexaoContagem_TelepatiXDAO() {
+		conexaoBD = ModuloConexaoTelepatiX.conector();
+		if (conexaoBD != null) {
+			System.out.println("conectado");
+		} else {
+			System.out.println("não conectado ao BD");
+		}
+	}
+	
+
+	public static void main(String[] args){
+		
+		conexaoBD = ModuloConexaoTelepatiX.conector();
+		conexaoContagem_TelepatiXDAO();
+		
+		hashLetras = new HashMap<String, Integer>();
+
+		hashLetras.put("A", 2); hashLetras.put("B", 3); hashLetras.put("C", 4); hashLetras.put("D", 5); 
+		
+		hashLetras.put("E", 3); hashLetras.put("F", 4); hashLetras.put("G", 5); hashLetras.put("H", 6); 
+		
+		hashLetras.put("I", 4); hashLetras.put("J", 5); hashLetras.put("K", 6); hashLetras.put("L", 7); 
+		
+		hashLetras.put("M", 8);  hashLetras.put("N", 9); hashLetras.put("O", 5); hashLetras.put("P", 6); 
+		
+		hashLetras.put("Q", 7); hashLetras.put("R", 8); hashLetras.put("S", 9); hashLetras.put("T", 10);
+
+		hashLetras.put("U", 6); hashLetras.put("V", 7); hashLetras.put("W", 8);hashLetras.put("X", 9); 
+		
+		hashLetras.put("Y", 10); hashLetras.put("Z", 11); hashLetras.put(" ", 7); //ESPACO
+		
+		
+		double erro1[]= {0.01};
+		double erro2[]= {0.03};
+		double erro3[]= {0.05};
+		double erro4[]= {0.1};
+		double erro5[]= {0.15};
+		double erro6[]= {0.2};
+		double erro50P[]= {0.5};
+
+		ArrayList<String> listaFrases=new ArrayList<String>();
+
+		listaFrases.add("PODE FALAR MAIS DEVAGAR POR FAVOR");
+//		listaFrases.add("PODE EXPLICAR DE NOVO PROFESSOR"); // ativar a cada 30 execuções do anterior
+//		listaFrases.add("PRECISO QUE ME LEVE AO BANHEIRO");// ativar a cada 30 execuções do anterior
+//		listaFrases.add("ESTOU ENTENDENDO AGORA");// ativar a cada 30 execuções do anterior
+//		listaFrases.add("EU NAO ESTOU ENTENDENDO");// ativar a cada 30 execuções do anterior
+//		listaFrases.add("PRECISO DE AJUDA CUIDADORA");// ativar a cada 30 execuções do anterior
+//		listaFrases.add("SIM");// ativar a cada 30 execuções do anterior
+//		listaFrases.add("NAO");// ativar a cada 30 execuções do anterior
+	
+		
+		// Calcular o tempo
+
+		double desv = 0D;	
+
+		for(String frase:listaFrases)
+		{
+				for (double err : erro1) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = calcTelepatiX(err, frase);
+				        valor.add(res);
+//				        System.out.println("kk:"+res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirTelepatiX1(media, desv);
+				}
+				
+			}
+		for(String frase:listaFrases)
+		{
+				for (double err : erro2) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = calcTelepatiX(err, frase);
+//						System.out.println("kk:"+res);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirTelepatiX2(media, desv);
+				}
+				
+			}
+		for(String frase:listaFrases)
+		{
+				for (double err : erro3) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = calcTelepatiX(err, frase);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirTelepatiX3(media, desv);
+				}
+				
+			}
+		
+		for(String frase:listaFrases)
+		{
+				for (double err : erro4) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = calcTelepatiX(err, frase);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirTelepatiX4(media, desv);
+				}
+				
+			}
+		for(String frase:listaFrases)
+		{
+				for (double err : erro5) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = calcTelepatiX(err, frase);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirTelepatiX5(media, desv);
+				}
+				
+			}
+		for(String frase:listaFrases)
+		{
+				for (double err : erro6) 
+				{
+					
+					double media=0;
+					for(int i=0;i<100;i++)
+					{
+						double res = calcTelepatiX(err, frase);
+				        valor.add(res);
+						media+=res;
+						desv = getDesvioPadrao(valor);
+					}
+					media=media/100;
+					System.out.println(media);
+					System.out.println(desv);
+					inserirTelepatiX6(media, desv);
+				}
+				
+			}
+		
+		for (String frase : listaFrases) {
+			for (double erro : erro50P) {
+				double tempo = 0;
+
+				for (int i = 0; i < 100; i++) {
+					
+					double resultado = calcTelepatiX(erro, frase);
+					valor.add(resultado);
+					tempo += resultado;
+					desv = getDesvioPadrao(valor);
+				}
+				tempo = tempo / 100;
+				inserirBDTelepatiX(tempo, desv);
+			}
+		}
+		
+		
+		
+	}
+	
+	static double calcTelepatiX(double erro, String frase) {
+		int count = 0;
+		double numberRandom;
+
+		for (int i = 0; i < frase.length(); i++) {
+			String c = frase.charAt(i) + "";
+			
+			do {
+				numberRandom = t.nextDouble();
+
+				if (numberRandom <= erro)
+					count = count + 9 + hashLetras.get(c);
+				// 9 segundos para corrigir [apagar] cada letra
+				else
+					count = count + hashLetras.get(c);
+
+			} while (numberRandom <= erro);
+		}
+		return count;
+	}
+	
+	 public static strictfp Double getMedia(List<Double> valor) {
+	        return getSoma(valor) / valor.size();
+	    }
+	    
+	    public static strictfp Double getSoma(List<Double> valor) {
+	        Double soma = 0D;
+	        for (int i = 0; i < valor.size(); i++) {
+	            soma += valor.get(i);
+	        }
+	        return soma;
+	    }
+	    
+	    public static strictfp Double getDesvioPadrao(List<Double> valor) {
+	        Double media = getMedia(valor);
+	        int tam = valor.size();
+	        Double variancia = 0D;
+	        for (Double vlr : valor) {
+	            Double aux = vlr - media;
+	            variancia += aux * aux;
+	        }
+	        
+	        return Math.sqrt(variancia / (tam-1));
+	    }
+	    
+	    public static Boolean inserirTelepatiX1(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo1 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirTelepatiX2(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo2 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirTelepatiX3(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo3 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirTelepatiX4(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo4 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirTelepatiX5(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo5 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    public static Boolean inserirTelepatiX6(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo6 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+	    
+	    public static Boolean inserirBDTelepatiX(double tempoMedio, double desvioPadrao){
+	        Boolean retorno = false;
+	        String sql = "insert into calculo7 (tempoMedio, desvioPadrao) values (?,?)";
+	        
+	        try
+	        {
+	        	
+	            pst = conexaoBD.prepareStatement(sql);
+				pst.setDouble(1, tempoMedio);
+				pst.setDouble(2, desvioPadrao);
+
+				pst.executeUpdate();
+	            retorno = true;
+	            
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return retorno;
+	    
+	    }
+}
